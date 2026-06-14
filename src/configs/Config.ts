@@ -58,7 +58,7 @@ export const defaultConfig: Config = {
     silentStartDownload: false,
     // 0 means no minimum (capture all sizes)
     captureFileSizeMinimumKb: 0,
-    shortCut:"Control",
+    bypassShortcut: "Delete",
 }
 
 export const configKeys: ReadonlyArray<keyof Config> = Object.keys(defaultConfig) as any
@@ -88,7 +88,7 @@ export interface Config {
     blacklistedUrls: string[]
     // minimum file size to capture in kilobytes. 0 = no minimum (capture all sizes)
     captureFileSizeMinimumKb: number
-    shortCut: string,
+    bypassShortcut: string,
 }
 
 export const MIN_ALLOWED_PORT = 1024

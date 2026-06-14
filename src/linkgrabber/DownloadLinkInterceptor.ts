@@ -165,7 +165,7 @@ export abstract class DownloadLinkInterceptor {
 
         // When auto-capture of download links is enabled, holding down the shortcut key
         // and clicking on the download link uses the internal browser download method.
-        if (_keyName === getLatestConfig().shortCut) {
+        if (_keyName === getLatestConfig().bypassShortcut) {
             return false
         }
 

@@ -82,7 +82,7 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
     captureFileSizeMinimumKb!: number
 
     @observable
-    shortCut!: string
+    bypassShortcut!: string
 
     setAutoCaptureLinks(value: boolean) {
         Configs.setConfigItem("autoCaptureLinks", value)
@@ -101,7 +101,7 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
     }
 
     setShortCut(value: string){
-        Configs.setConfigItem("shortCut", value)
+        Configs.setConfigItem("bypassShortcut", value)
     }
 
     setPopupEnabled(value: boolean) {
@@ -229,8 +229,8 @@ const SettingsSection: React.FC<{ vm: ToolsViewModel }> = observer((props) => {
                 setBlacklistedUrls={urls => vm.setBlacklistedUrls(urls)}
                 captureFileSizeMinimumKb={vm.captureFileSizeMinimumKb}
                 setCaptureFileSizeMinimumKb={(v) => vm.setCaptureFileSizeMinimumKb(v)}
-                shortCut={vm.shortCut}
-                setShortCut={(v) => vm.setShortCut(v)}
+                bypassShortcut={vm.bypassShortcut}
+                setBypassShortcut={(v) => vm.setShortCut(v)}
             />
             <Divider/>
             <ShowPopupSection value={vm.popupEnabled} toggle={(v) => vm.setPopupEnabled(v)}/>
@@ -371,8 +371,8 @@ function AutoCaptureSection(
         defaultBlacklistedUrls: string[],
         captureFileSizeMinimumKb: number,
         setCaptureFileSizeMinimumKb: (n: number) => void,
-        shortCut:string,
-        setShortCut:(s: string) => void,
+        bypassShortcut: string,
+        setBypassShortcut: (s: string) => void,
     }
 ) {
     const [fileTypesString, setFileTypesString] = useState<string>("")
@@ -486,18 +486,19 @@ function AutoCaptureSection(
                 </div>
                 <div className="mt-2"/>
                 <div className="flex flex-col space-y-2">
-                    <label>{browser.i18n.getMessage("config_short_cut")}</label>
+                    <label>{browser.i18n.getMessage("config_bypass_shortcut")}</label>
                     <div className="flex items-center space-x-2">
                         <select
-                            value={props.shortCut}
-                            onChange={(e) => props.setShortCut(e.target.value)}
+                            value={props.bypassShortcut}
+                            onChange={(e) => props.setBypassShortcut(e.target.value)}
                             className="select select-sm flex-1"
                         >
                             <option value={"Control"}>Control</option>
+                            <option value={"Delete"}>Delete</option>
                         </select>
                     </div>
                 </div>
-                <div>{browser.i18n.getMessage("config_short_cut_description")}</div>
+                <div>{browser.i18n.getMessage("config_bypass_shortcut_description")}</div>
             </div>
         }
     />
