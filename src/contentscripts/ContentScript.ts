@@ -9,6 +9,7 @@ import {onMessage} from "webext-bridge/content-script"
 import browser from "webextension-polyfill";
 import {createAlertStringForMyExtension} from "~/utils/AlertMessageCreator";
 import {addDownloads} from "~/contentscripts/AddDownloads";
+import {sendMessage} from "webext-bridge/options";
 
 const showPopupDelayed = debounce(500)
 
@@ -60,6 +61,16 @@ run(async () => {
             selectionPopup.closeAddDownloadPopupUi();
         }
     })
+
+    let keyName = ""
+    document.addEventListener("keydown", (e) => {
+        keyName = e.key
+    })
+
+    document.addEventListener("keyup", (e) => {
+        keyName = ""
+    })
+
     document.addEventListener("mouseup", () => {
         showPopupDelayed(() => {
             const mousePositionInPage = mousePosition.getMousePositionInPage();
@@ -80,7 +91,15 @@ run(async () => {
             lastSelectionConsumed = false
             selectionPopup.showAddDownloadPopupUi(mousePositionInPage)
         })
+        sendMessage('get_event',keyName).finally(()=>{
+            keyName = ""
+        })
     })
+
+    window.addEventListener('blur', function() {
+        keyName = ""
+    })
+
     onMessage("show_log", (msg) => {
         console.log(...msg.data)
     })

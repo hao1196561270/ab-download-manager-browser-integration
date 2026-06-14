@@ -12,6 +12,7 @@ declare module "webext-bridge" {
         show_log:string[];
         check_selected_text_for_links:null;
         test_port:ProtocolWithReturn<number,boolean>;
-        get_headers:ProtocolWithReturn<string[],(DownloadRequestHeaders | null)[]>
+        get_headers:ProtocolWithReturn<string[],(DownloadRequestHeaders | null)[]>;
+        get_event:string;
     }
 }

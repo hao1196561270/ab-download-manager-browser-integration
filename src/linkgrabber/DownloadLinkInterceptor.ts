@@ -14,6 +14,7 @@ import {OnMediaInterceptedFromRequestListener} from "~/media/OnMediaInterceptedF
 import {MEDIA_BLACKLIST_URLS} from "~/media/MediaBlackList";
 import {getContentType, getContentLength} from "~/utils/HeaderUtils";
 import {getFileExtension, getFileFromHeaders, getFileFromUrl} from "~/utils/URLUtils";
+import {onMessage} from "webext-bridge/background";
 
 type TabInfo = {
     title?: string,
@@ -162,6 +163,12 @@ export abstract class DownloadLinkInterceptor {
             return false
         }
 
+        // When auto-capture of download links is enabled, holding down the shortcut key
+        // and clicking on the download link uses the internal browser download method.
+        if (_keyName === getLatestConfig().shortCut) {
+            return false
+        }
+
         return this.isDirectDownloadContent(details, responseHeaders)
     }
 
@@ -258,6 +265,7 @@ export abstract class DownloadLinkInterceptor {
         const filter: WebRequest.RequestFilter = {
             urls: ["*://*/*"],
         }
+        receiveMessageFromContentScripts()
         browser.tabs.onCreated.addListener((tab) => {
             if (tab.id && tab.url) {
                 this.addItemToNewTabs(tab.id, tab.url)
@@ -513,4 +521,12 @@ function getHeaders(responseHeaders?: browser.WebRequest.HttpHeaders): Headers {
         }
     })
     return headers
+}
+
+let _keyName = ""
+
+function receiveMessageFromContentScripts() {
+    onMessage("get_event", async (msg) => {
+        _keyName = msg.data
+    })
 }
