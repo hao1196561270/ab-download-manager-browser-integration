@@ -13,6 +13,6 @@ declare module "webext-bridge" {
         check_selected_text_for_links:null;
         test_port:ProtocolWithReturn<number,boolean>;
         get_headers:ProtocolWithReturn<string[],(DownloadRequestHeaders | null)[]>;
-        get_event:string;
+        set_holding_key: string;
     }
 }

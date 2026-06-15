@@ -62,13 +62,13 @@ run(async () => {
         }
     })
 
-    let keyName = ""
+    let holdingKey = ""
     document.addEventListener("keydown", (e) => {
-        keyName = e.key
+        holdingKey = e.key
     })
 
     document.addEventListener("keyup", (e) => {
-        keyName = ""
+        holdingKey = ""
     })
 
     document.addEventListener("mouseup", () => {
@@ -91,13 +91,13 @@ run(async () => {
             lastSelectionConsumed = false
             selectionPopup.showAddDownloadPopupUi(mousePositionInPage)
         })
-        sendMessage('get_event',keyName).finally(()=>{
-            keyName = ""
+        sendMessage('set_holding_key', holdingKey).finally(() => {
+            holdingKey = ""
         })
     })
 
     window.addEventListener('blur', function() {
-        keyName = ""
+        holdingKey = ""
     })
 
     onMessage("show_log", (msg) => {

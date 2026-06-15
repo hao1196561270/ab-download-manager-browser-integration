@@ -16,6 +16,7 @@ import {getContentLength, getContentType} from "~/utils/HeaderUtils";
 import {getFileExtension, getFileFromHeaders, getFileFromUrl} from "~/utils/URLUtils";
 import {onMessage} from "webext-bridge/background";
 import _ from "lodash";
+import * as BackgroundSharedState from "~/background/BackgroundSharedState";
 
 type TabInfo = {
     title?: string,
@@ -181,9 +182,7 @@ export abstract class DownloadLinkInterceptor {
     }
 
     private isBypassShortcutPressed() {
-        // When auto-capture of download links is enabled, holding down the shortcut key
-        // and clicking on the download link uses the internal browser download method.
-        return _keyName === getLatestConfig().bypassShortcut
+        return BackgroundSharedState.isBypassShortcutPressed()
     }
 
     private isDirectDownloadContent(
@@ -273,7 +272,6 @@ export abstract class DownloadLinkInterceptor {
         const filter: WebRequest.RequestFilter = {
             urls: ["*://*/*"],
         }
-        receiveMessageFromContentScripts()
         browser.tabs.onCreated.addListener((tab) => {
             if (tab.id && tab.url) {
                 this.addItemToNewTabs(tab.id, tab.url)
@@ -617,12 +615,4 @@ function getHeaders(responseHeaders?: browser.WebRequest.HttpHeaders): Headers {
         }
     })
     return headers
-}
-
-let _keyName = ""
-
-function receiveMessageFromContentScripts() {
-    onMessage("get_event", async (msg) => {
-        _keyName = msg.data
-    })
 }

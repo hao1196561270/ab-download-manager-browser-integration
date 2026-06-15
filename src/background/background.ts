@@ -8,6 +8,7 @@ import {addDownload, getHeadersForUrls} from "~/background/actions";
 import {Disposable} from "~/utils/disposable";
 import {keepListeningToEvents} from "~/utils/extension-api";
 import {IS_MV3} from "~/utils/ManifestUtil";
+import {setHoldingKey} from "~/background/BackgroundSharedState";
 
 function receiveMessageFromContentScripts() {
     onMessage("add_download",async (msg)=>{
@@ -21,6 +22,9 @@ function receiveMessageFromContentScripts() {
     })
     onMessage("get_headers",async (msg)=>{
         return await getHeadersForUrls(msg.data)
+    })
+    onMessage("set_holding_key", async (msg) => {
+        setHoldingKey(msg.data)
     })
 }
 
