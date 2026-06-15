@@ -24,8 +24,9 @@ type TabInfo = {
 }
 
 type InterceptedBrowserRequestWithResponse = {
-    request: WebRequest.OnSendHeadersDetailsType,
-    response?: WebRequest.OnHeadersReceivedDetailsType,
+    initialRequest: WebRequest.OnSendHeadersDetailsType
+    finalRequest: WebRequest.OnSendHeadersDetailsType,
+    finalResponse?: WebRequest.OnHeadersReceivedDetailsType,
     handledOnWebRequest?: boolean,
 }
 
@@ -35,8 +36,15 @@ export abstract class DownloadLinkInterceptor {
     private tabCache: Record<number, TabInfo> = {}
 
     protected setPendingRequest(id: string, requestHeaders: WebRequest.OnSendHeadersDetailsType) {
-        this.pendingRequests[id] = {
-            request: requestHeaders,
+        let request = this.pendingRequests[id]
+        if (request) {
+            // track redirects
+            request.finalRequest = requestHeaders
+        } else {
+            this.pendingRequests[id] = {
+                initialRequest: requestHeaders,
+                finalRequest: requestHeaders,
+            }
         }
     }
 
@@ -314,7 +322,7 @@ export abstract class DownloadLinkInterceptor {
                 if (!request) {
                     return
                 }
-                this.checkForDirectMedia(details, request.request)
+                this.checkForDirectMedia(details, request.finalRequest)
             },
             {
                 types: ["media"],
@@ -330,7 +338,7 @@ export abstract class DownloadLinkInterceptor {
                 if (!request) {
                     return
                 }
-                this.checkForHLS(details, request.request)
+                this.checkForHLS(details, request.finalRequest)
             }, {
                 types: ["xmlhttprequest"],
                 urls: [
@@ -357,7 +365,7 @@ export abstract class DownloadLinkInterceptor {
                     if (request === undefined) {
                         return this.passResponse()
                     }
-                    request.response = details
+                    request.finalResponse = details
                     const result = this.shouldHandleRequestForDirectDownload(details);
                     if (!result) {
                         return this.passResponse()
@@ -365,7 +373,7 @@ export abstract class DownloadLinkInterceptor {
                     // let the browser.download now that we handled the request here!
                     request.handledOnWebRequest = true
                     // direct download
-                    const downloadRequestItem = this.createDirectDownloadItemFromWebRequest(request.request)
+                    const downloadRequestItem = this.createDirectDownloadItemFromWebRequest(request.finalRequest)
                     const requestAccepted = await this.requestAddDownload(downloadRequestItem);
                     if (requestAccepted) {
                         // if (!this.canBlockResponse()) {
@@ -373,14 +381,14 @@ export abstract class DownloadLinkInterceptor {
                         // so, we must let this response be available a little
                         // then removing it
                         // }
-                        await this.onDownloadSendToAppSuccess(request.request)
+                        await this.onDownloadSendToAppSuccess(request.finalRequest)
                         // if (!isBrowserHonorRequestBlocking()){
                         //     delete cancelledBrowserDownloads[details.requestId]
                         // }
                         //cancel browser request
                         return this.cancelResponse()
                     } else {
-                        await this.onDownloadSendToAppFailed(request.request)
+                        await this.onDownloadSendToAppFailed(request.finalRequest)
                         // if (!isBrowserHonorRequestBlocking()){
                         //     startDownloadUsingNativeBrowser(request)
                         // }
@@ -412,7 +420,11 @@ export abstract class DownloadLinkInterceptor {
             // do we have recorded its request?
             const interceptedRequest = this
                 .getInterceptedRequestByUrl(details.url)
-            // we might already start download in webRequest so just cancell it here
+            // this will be sent to the app, might be overridden if there is a pending request related to this url
+            let downloadUrl = details.url
+            let downloadPage: string | null = null
+
+            // we might already start download in webRequest so just cancel it here
             if (interceptedRequest?.handledOnWebRequest) {
                 console.log("interceptedRequest already handled")
                 await this.cancelDownload(details.id)
@@ -420,18 +432,17 @@ export abstract class DownloadLinkInterceptor {
             }
             if (interceptedRequest) {
                 // we only support GET downloads, if we recorded the request then we can check if it
-                if (interceptedRequest.request.method !== "GET") {
-                    console.log("request method is not supported", interceptedRequest?.request.method)
+                if (interceptedRequest.finalRequest.method !== "GET") {
+                    console.log("request method is not supported", interceptedRequest?.finalRequest.method)
                     return
                 }
+                downloadUrl = interceptedRequest.finalRequest.url
+                downloadPage = this.getDownloadPage(interceptedRequest.finalRequest)
             }
-            let downloadPage: string | null
-            if (interceptedRequest) {
-                downloadPage = this.getDownloadPage(interceptedRequest.request)
-            } else {
+            if (!downloadPage) {
                 downloadPage = details.referrer || null
             }
-            if (this.isInConfigBlacklist(details.url)) {
+            if (this.isInConfigBlacklist(downloadUrl)) {
                 return
             }
             if (downloadPage && this.isInConfigBlacklist(downloadPage)) {
@@ -447,17 +458,17 @@ export abstract class DownloadLinkInterceptor {
             }
             let requestHeaders: DownloadRequestHeaders = {}
             if (interceptedRequest) {
-                interceptedRequest.request.requestHeaders?.forEach((header) => {
+                interceptedRequest.finalRequest.requestHeaders?.forEach((header) => {
                     if (header.value) {
                         requestHeaders[header.name] = header.value
                     }
                 })
             }
             if (_.isEmpty(requestHeaders)) {
-                requestHeaders = await getHeadersForUrl(details.url) || {}
+                requestHeaders = await getHeadersForUrl(downloadUrl) || {}
             }
-            if (interceptedRequest?.response) {
-                const response = interceptedRequest.response
+            if (interceptedRequest?.finalResponse) {
+                const response = interceptedRequest.finalResponse
                 if (this.isInConfigBlacklist(response.originUrl || response.url)) {
                     return
                 }
@@ -469,7 +480,7 @@ export abstract class DownloadLinkInterceptor {
 
             await this.cancelDownload(details.id)
             const item: DownloadRequestItem = {
-                link: details.url,
+                link: downloadUrl,
                 description: null,
                 downloadPage: downloadPage,
                 headers: requestHeaders,
@@ -494,7 +505,7 @@ export abstract class DownloadLinkInterceptor {
     getInterceptedRequestByUrl(url: string) {
         return Object.values(this.pendingRequests).find(
             pr => {
-                return pr.request.url === url
+                return pr.finalRequest.url === url || pr.initialRequest.url === url
             }
         )
     }
