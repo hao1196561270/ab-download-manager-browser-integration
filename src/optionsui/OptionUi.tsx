@@ -375,7 +375,9 @@ function AutoCaptureSection(
         setBypassShortcut: (s: string) => void,
     }
 ) {
-    const [fileTypesString, setFileTypesString] = useState<string>("")
+    const [fileTypesString, setFileTypesString] = useState<string>(() => {
+        return props.fileTypes.join(" ")
+    })
     const canBeResetTypes = useMemo(() => {
         return !arrayEquals(props.defaultFileTypes, props.fileTypes)
     }, [props.fileTypes])
