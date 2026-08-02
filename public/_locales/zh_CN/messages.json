@@ -9,16 +9,16 @@
     "message": "请先进行选择"
   },
   "context_menu_download_with_abdm": {
-    "message": "使用 AB 下载管理器下载"
+    "message": "使用 AB DM 下载"
   },
   "context_menu_download_selected_links_with_abdm": {
-    "message": "使用 AB 下载管理器下载所选链接"
+    "message": "使用 AB DM 下载所选链接"
   },
   "browser_action_popup_title": {
-    "message": "AB 下载管理器快速设置"
+    "message": "AB DM 快速设置"
   },
   "option_ui_title": {
-    "message": "AB 下载管理器扩展"
+    "message": "AB Download Manager 扩展"
   },
   "connection_connected": {
     "message": "已连接"
@@ -129,7 +129,7 @@
     "message": "测试"
   },
   "note_about_app_must_be_installed_first": {
-    "message": "为了使此扩展正常工作，请确保已安装 AB 下载管理器，如果尚未安装……"
+    "message": "为了使此扩展正常工作，请确保已安装 AB Download Manager，如果尚未安装请"
   },
   "download_abdm_app": {
     "message": "下载应用"
@@ -144,13 +144,13 @@
     "message": "项目源代码"
   },
   "abdm_notification_title": {
-    "message": "AB 下载管理器"
+    "message": "AB Download Manager"
   },
   "abdm_notification_download_captured_silently": {
     "message": "已静默捕获下载"
   },
   "download_media_title": {
-    "message": "使用 AB 下载管理器下载"
+    "message": "使用 ABDM 下载"
   },
   "unnamed_media": {
     "message": "未命名媒体"
