@@ -45,5 +45,29 @@ npm run pack:chrome
 
 我花费了大量时间来创建这个项目。
 
-如果作者的的作品，请考虑给原作者一个 ⭐。
+如果喜欢作者的作品，请考虑给原作者一个 ⭐。
 谢谢 ❤️
+
+## 贡献指南
+
+欢迎对本项目进行贡献！你可以通过以下方式参与：
+
+- 提交 Issue 报告 Bug 或提出新功能建议
+- 提交 Pull Request 修复问题或改进代码
+- 完善文档或翻译
+
+在提交 Pull Request 前，请先基于最新的 `master` 分支创建特性分支，并确保本地构建通过：
+
+```bash
+npm i
+npm run pack:firefox
+npm run pack:chrome
+```
+
+提交信息请尽量清晰简洁，说明本次改动的目的。若你的修改涉及主应用程序，请前往[主应用程序仓库](https://github.com/amir1376/ab-download-manager)提交。
+
+## 许可证
+
+本项目采用 [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0) 许可证。
+
+ Copyright 归项目作者所有。你可以在遵循该许可证条款的前提下自由使用、修改和分发本项目的代码，包括用于商业用途，但需保留原始版权声明与许可证声明，并遵守署名、专利授权等相关条款。许可证的完整文本详见 [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0)。
