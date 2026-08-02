@@ -186,11 +186,6 @@ export abstract class DownloadLinkInterceptor {
             return false
         }
 
-        if (BackgroundSharedState.isSuspendMode()) {
-            // suspend shortcut is active, let the browser handle the download
-            return false
-        }
-
         return this.isDirectDownloadContent(details, responseHeaders)
     }
 
@@ -470,10 +465,6 @@ export abstract class DownloadLinkInterceptor {
                 return
             }
             if (this.isBypassShortcutPressed()) {
-                return
-            }
-            if (BackgroundSharedState.isSuspendMode()) {
-                // suspend shortcut is active, let the browser handle the download
                 return
             }
             let requestHeaders: DownloadRequestHeaders = {}

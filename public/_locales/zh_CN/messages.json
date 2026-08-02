@@ -181,26 +181,5 @@
   },
   "config_bypass_shortcut_option_delete": {
     "message": "Delete 键"
-  },
-  "config_suspend_shortcut": {
-    "message": "暂停接管快捷键"
-  },
-  "config_suspend_shortcut_description": {
-    "message": "按下此快捷键可临时暂停扩展对下载的接管，让浏览器原生的下载功能恢复；再次按下该快捷键，或当前下载完成后，扩展会恢复接管。默认为右 Shift 键。"
-  },
-  "config_suspend_shortcut_option_right_shift": {
-    "message": "右 Shift 键"
-  },
-  "config_suspend_shortcut_option_left_shift": {
-    "message": "左 Shift 键"
-  },
-  "config_suspend_shortcut_option_control": {
-    "message": "Ctrl 键"
-  },
-  "config_suspend_shortcut_option_alt": {
-    "message": "左 Alt 键"
-  },
-  "config_suspend_shortcut_option_right_alt": {
-    "message": "右 Alt 键"
   }
 }

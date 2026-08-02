@@ -36,7 +36,6 @@ type ConfigsWithSomeSetters = Omit<WithSetters<Configs.Config>,
     | "setAllowPassDownloadIfAppNotRespond"
     | "setCloseNewTabIfItWasCaptured"
     | "setBypassShortcut"
-    | "setSuspendShortcut"
 >
 
 class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements ConfigsWithSomeSetters {
@@ -98,9 +97,6 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
     @observable
     bypassShortcut!: string
 
-    @observable
-    suspendShortcut!: string
-
     setAutoCaptureLinks(value: boolean) {
         Configs.setConfigItem("autoCaptureLinks", value)
     }
@@ -119,10 +115,6 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
 
     setShortCut(value: string) {
         Configs.setConfigItem("bypassShortcut", value)
-    }
-
-    setSuspendShortcut(value: string) {
-        Configs.setConfigItem("suspendShortcut", value)
     }
 
     setPopupEnabled(value: boolean) {
@@ -270,8 +262,6 @@ const SettingsSection: React.FC<{ vm: ToolsViewModel }> = observer((props) => {
                 setCaptureFileSizeMinimumKb={(v) => vm.setCaptureFileSizeMinimumKb(v)}
                 bypassShortcut={vm.bypassShortcut}
                 setBypassShortcut={(v) => vm.setShortCut(v)}
-                suspendShortcut={vm.suspendShortcut}
-                setSuspendShortcut={(v) => vm.setSuspendShortcut(v)}
             />
             <Divider/>
             <ShowPopupSection value={vm.popupEnabled} toggle={(v) => vm.setPopupEnabled(v)}/>
@@ -420,8 +410,6 @@ function AutoCaptureSection(
         setCaptureFileSizeMinimumKb: (n: number) => void,
         bypassShortcut: string,
         setBypassShortcut: (s: string) => void,
-        suspendShortcut: string,
-        setSuspendShortcut: (s: string) => void,
     }
 ) {
     const [fileTypesString, setFileTypesString] = useState<string>(() => {
@@ -523,7 +511,7 @@ function AutoCaptureSection(
                         </select>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <label className="text-sm">{browser.i18n.getMessage("config_capture_file_size_custom_value")}:</label>
+                        <label className="text-sm">{browser.i18n.getMessage("config_capture_file_size_custom_value")}</label>
                         <input
                             type="number"
                             min={0}
@@ -550,24 +538,6 @@ function AutoCaptureSection(
                     </div>
                 </div>
                 <div>{browser.i18n.getMessage("config_bypass_shortcut_description")}</div>
-                <div className="mt-3"/>
-                <div className="flex flex-col space-y-2">
-                    <label>{browser.i18n.getMessage("config_suspend_shortcut")}</label>
-                    <div className="flex items-center space-x-2">
-                        <select
-                            value={props.suspendShortcut}
-                            onChange={(e) => props.setSuspendShortcut(e.target.value)}
-                            className="select select-sm flex-1"
-                        >
-                            <option value={"ShiftRight"}>{browser.i18n.getMessage("config_suspend_shortcut_option_right_shift")}</option>
-                            <option value={"ShiftLeft"}>{browser.i18n.getMessage("config_suspend_shortcut_option_left_shift")}</option>
-                            <option value={"Control"}>{browser.i18n.getMessage("config_suspend_shortcut_option_control")}</option>
-                            <option value={"Alt"}>{browser.i18n.getMessage("config_suspend_shortcut_option_alt")}</option>
-                            <option value={"AltRight"}>{browser.i18n.getMessage("config_suspend_shortcut_option_right_alt")}</option>
-                        </select>
-                    </div>
-                </div>
-                <div>{browser.i18n.getMessage("config_suspend_shortcut_description")}</div>
             </div>
         }
     />

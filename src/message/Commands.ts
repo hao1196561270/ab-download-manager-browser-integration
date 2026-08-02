@@ -8,6 +8,5 @@ export const DefinedCommands = Object.freeze({
     IS_APP_REACHABLE: "is_app_reachable",
     GET_HEADERS: "get_headers",
     SET_HOLDING_KEY: "set_holding_key",
-    SET_SUSPEND_STATE: "set_suspend_state",
     DOWNLOADABLE_MEDIA_DETECTED: "downloadable_media_detected",
 })

@@ -72,9 +72,6 @@ const ConfigType = z.object({
     // minimum file size to capture in kilobytes. 0 = no minimum (capture all sizes)
     captureFileSizeMinimumKb: z.int().catch(0),
     bypassShortcut: z.string().catch("Delete"),
-    // Suspend shortcut toggles the extension's capture (so the browser's native
-    // download manager takes over). Stored as a KeyboardEvent.code value.
-    suspendShortcut: z.string().catch("ShiftRight"),
     apiKey: z.string().catch(""),
 })
 

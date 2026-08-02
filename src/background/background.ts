@@ -8,7 +8,7 @@ import {addDownload, getHeadersForUrls} from "~/background/actions";
 import {Disposable} from "~/utils/disposable";
 import {keepListeningToEvents} from "~/utils/extension-api";
 import {IS_MV3} from "~/utils/ManifestUtil";
-import {setHoldingKey, setSuspendMode} from "~/background/BackgroundSharedState";
+import {setHoldingKey} from "~/background/BackgroundSharedState";
 import * as Backend from "~/backend/Backend";
 import {DefinedCommands} from "~/message/Commands";
 
@@ -34,20 +34,7 @@ function receiveMessageFromContentScripts() {
     onMessage(DefinedCommands.SET_HOLDING_KEY, async (msg) => {
         setHoldingKey(msg.data)
     })
-    onMessage(DefinedCommands.SET_SUSPEND_STATE, async () => {
-        // toggle suspend mode so the browser's native download manager takes over
-        setSuspendMode(!BackgroundSharedState.isSuspendMode())
-    })
 }
-
-// when a download started while suspend mode was active finishes, resume capture
-browser.downloads.onChanged.addListener((downloadDelta) => {
-    if (downloadDelta.state && downloadDelta.state.current === "complete") {
-        if (BackgroundSharedState.isSuspendMode()) {
-            setSuspendMode(false)
-        }
-    }
-})
 
 run(async () => {
     const disposable= new Disposable()
