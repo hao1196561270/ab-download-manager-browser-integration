@@ -104,6 +104,30 @@ run(async () => {
         })
     })
 
+    // Suspend shortcut: pressing the configured key (default right Shift) toggles
+    // the extension's capture so the browser's native download manager takes over.
+    // We only handle it as a toggle, ignoring auto-repeat key events.
+    let suspendKeyHandled = false
+    document.addEventListener("keydown", (event) => {
+        const configuredKey = Configs.getLatestConfig().suspendShortcut
+        if (event.code !== configuredKey) return
+        if (event.repeat) return
+        if (suspendKeyHandled) return
+        suspendKeyHandled = true
+        run(async () => {
+            try {
+                await sendMessage(DefinedCommands.SET_SUSPEND_STATE, {}, "background")
+            } catch (e) {
+                // ignored
+            }
+        })
+    })
+    document.addEventListener("keyup", (event) => {
+        if (event.code === Configs.getLatestConfig().suspendShortcut) {
+            suspendKeyHandled = false
+        }
+    })
+
     onMessage(DefinedCommands.SHOW_LOG, (msg) => {
         console.log(...msg.data)
     })

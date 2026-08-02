@@ -1,0 +1,206 @@
+{
+  "selection_popup_download_selected": {
+    "message": "下载所选内容"
+  },
+  "popup_alert_no_link_detected": {
+    "message": "未检测到链接"
+  },
+  "popup_alert_nothing_selected": {
+    "message": "请先进行选择"
+  },
+  "context_menu_download_with_abdm": {
+    "message": "使用 AB 下载管理器下载"
+  },
+  "context_menu_download_selected_links_with_abdm": {
+    "message": "使用 AB 下载管理器下载所选链接"
+  },
+  "browser_action_popup_title": {
+    "message": "AB 下载管理器快速设置"
+  },
+  "option_ui_title": {
+    "message": "AB 下载管理器扩展"
+  },
+  "connection_connected": {
+    "message": "已连接"
+  },
+  "connection_not_connected": {
+    "message": "未连接"
+  },
+  "connection_checking": {
+    "message": "检测中"
+  },
+  "config_auto_capture_links": {
+    "message": "自动捕获链接"
+  },
+  "config_auto_capture_links_description": {
+    "message": "当您在浏览器中点击某个链接时，该链接会自动被应用捕获以下载"
+  },
+  "reset_to_default": {
+    "message": "恢复默认"
+  },
+  "config_auto_capture_links_file_extensions_description": {
+    "message": "输入您希望被捕获的每个文件扩展名，然后按回车"
+  },
+  "config_ignored_url_patterns": {
+    "message": "忽略的网址规则"
+  },
+  "config_blacklisted_urls_description": {
+    "message": "输入您不希望被捕获的网址（每行一条，支持通配符 *）"
+  },
+  "config_silent_add_download": {
+    "message": "静默添加下载"
+  },
+  "config_silent_add_download_description": {
+    "message": "自动将捕获的下载添加到下载列表，而不显示“添加下载”窗口"
+  },
+  "config_silent_start_download": {
+    "message": "静默开始下载"
+  },
+  "config_silent_start_download_description": {
+    "message": "自动开始捕获的下载，而不显示“添加下载”窗口"
+  },
+  "config_show_popups": {
+    "message": "显示弹窗"
+  },
+  "config_show_popups_description": {
+    "message": "在包含链接的选区上显示弹窗"
+  },
+  "config_native_messaging_host": {
+    "message": "原生消息通信"
+  },
+  "config_native_messaging_host_description": {
+    "message": "当扩展拦截到新的下载时，即使应用尚未运行，也会自动启动该应用。"
+  },
+  "config_native_messaging_host_reachable": {
+    "message": "宿主程序可访问"
+  },
+  "config_native_messaging_host_not_reachable": {
+    "message": "宿主程序不可访问"
+  },
+  "config_port": {
+    "message": "端口"
+  },
+  "config_port_description": {
+    "message": "请确保此端口与应用中的值相同，否则扩展将无法正常工作"
+  },
+  "config_api_key": {
+    "message": "API 密钥"
+  },
+  "config_api_key_description": {
+    "message": "如果您已在应用设置中启用了 API 密钥验证，请在此粘贴生成的 API 密钥。"
+  },
+  "config_port_connection_success": {
+    "message": "成功\n端口（$port$）已连接",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_port_connection_fail": {
+    "message": "失败\n端口（$port$）未连接",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_send_cookies": {
+    "message": "发送 Cookies"
+  },
+  "config_send_cookies_descrption": {
+    "message": "注意：如果您处于不可信的环境中，请勿勾选此项"
+  },
+  "browser_action_more_settings": {
+    "message": "更多设置"
+  },
+  "connection_error_api_error": {
+    "message": "应用 API 出现问题，请确保将应用和扩展都更新到最新版本"
+  },
+  "connection_error_network_error": {
+    "message": "无法连接到应用程序，请确保应用已安装并正在运行。同时请确认已在应用设置中开启“浏览器集成”功能"
+  },
+  "settings": {
+    "message": "设置"
+  },
+  "test": {
+    "message": "测试"
+  },
+  "note_about_app_must_be_installed_first": {
+    "message": "为了使此扩展正常工作，请确保已安装 AB 下载管理器，如果尚未安装……"
+  },
+  "download_abdm_app": {
+    "message": "下载应用"
+  },
+  "project_website": {
+    "message": "项目网站"
+  },
+  "support_by_rating": {
+    "message": "如果您喜欢这个作品，别忘了通过评论/评分来支持我，并与您的朋友分享"
+  },
+  "project_source_code": {
+    "message": "项目源代码"
+  },
+  "abdm_notification_title": {
+    "message": "AB 下载管理器"
+  },
+  "abdm_notification_download_captured_silently": {
+    "message": "已静默捕获下载"
+  },
+  "download_media_title": {
+    "message": "使用 AB 下载管理器下载"
+  },
+  "unnamed_media": {
+    "message": "未命名媒体"
+  },
+  "config_capture_file_size_limit_kb": {
+    "message": "捕获文件大小下限（KB）"
+  },
+  "config_capture_file_size_limit_kb_description": {
+    "message": "仅捕获大小大于或等于此值（以 KB 为单位）的文件。设置为 0 表示捕获所有大小。"
+  },
+  "config_capture_file_size_custom": {
+    "message": "自定义 / 不限制"
+  },
+  "config_capture_file_size_custom_value": {
+    "message": "自定义值"
+  },
+  "config_capture_file_size_enter_kb": {
+    "message": "输入 KB"
+  },
+  "config_bypass_shortcut": {
+    "message": "绕过快捷键"
+  },
+  "config_bypass_shortcut_description": {
+    "message": "当启用下载链接自动捕获后，按住快捷键并点击下载链接，将使用浏览器自带的下载方式。"
+  },
+  "config_bypass_shortcut_option_control": {
+    "message": "Ctrl 键"
+  },
+  "config_bypass_shortcut_option_delete": {
+    "message": "Delete 键"
+  },
+  "config_suspend_shortcut": {
+    "message": "暂停接管快捷键"
+  },
+  "config_suspend_shortcut_description": {
+    "message": "按下此快捷键可临时暂停扩展对下载的接管，让浏览器原生的下载功能恢复；再次按下该快捷键，或当前下载完成后，扩展会恢复接管。默认为右 Shift 键。"
+  },
+  "config_suspend_shortcut_option_right_shift": {
+    "message": "右 Shift 键"
+  },
+  "config_suspend_shortcut_option_left_shift": {
+    "message": "左 Shift 键"
+  },
+  "config_suspend_shortcut_option_control": {
+    "message": "Ctrl 键"
+  },
+  "config_suspend_shortcut_option_alt": {
+    "message": "左 Alt 键"
+  },
+  "config_suspend_shortcut_option_right_alt": {
+    "message": "右 Alt 键"
+  }
+}

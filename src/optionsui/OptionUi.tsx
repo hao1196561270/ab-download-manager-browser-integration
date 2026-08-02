@@ -36,6 +36,7 @@ type ConfigsWithSomeSetters = Omit<WithSetters<Configs.Config>,
     | "setAllowPassDownloadIfAppNotRespond"
     | "setCloseNewTabIfItWasCaptured"
     | "setBypassShortcut"
+    | "setSuspendShortcut"
 >
 
 class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements ConfigsWithSomeSetters {
@@ -97,6 +98,9 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
     @observable
     bypassShortcut!: string
 
+    @observable
+    suspendShortcut!: string
+
     setAutoCaptureLinks(value: boolean) {
         Configs.setConfigItem("autoCaptureLinks", value)
     }
@@ -115,6 +119,10 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
 
     setShortCut(value: string) {
         Configs.setConfigItem("bypassShortcut", value)
+    }
+
+    setSuspendShortcut(value: string) {
+        Configs.setConfigItem("suspendShortcut", value)
     }
 
     setPopupEnabled(value: boolean) {
@@ -262,6 +270,8 @@ const SettingsSection: React.FC<{ vm: ToolsViewModel }> = observer((props) => {
                 setCaptureFileSizeMinimumKb={(v) => vm.setCaptureFileSizeMinimumKb(v)}
                 bypassShortcut={vm.bypassShortcut}
                 setBypassShortcut={(v) => vm.setShortCut(v)}
+                suspendShortcut={vm.suspendShortcut}
+                setSuspendShortcut={(v) => vm.setSuspendShortcut(v)}
             />
             <Divider/>
             <ShowPopupSection value={vm.popupEnabled} toggle={(v) => vm.setPopupEnabled(v)}/>
@@ -410,6 +420,8 @@ function AutoCaptureSection(
         setCaptureFileSizeMinimumKb: (n: number) => void,
         bypassShortcut: string,
         setBypassShortcut: (s: string) => void,
+        suspendShortcut: string,
+        setSuspendShortcut: (s: string) => void,
     }
 ) {
     const [fileTypesString, setFileTypesString] = useState<string>(() => {
@@ -475,7 +487,7 @@ function AutoCaptureSection(
                 <div className="mt-2"/>
                 <div>{browser.i18n.getMessage("config_auto_capture_links_file_extensions_description")}</div>
                 <div className="mt-3"/>
-                <div>Ignored Url patterns</div>
+                <div>{browser.i18n.getMessage("config_ignored_url_patterns")}</div>
                 <div className="mt-2"/>
                 <AutoGrowingTextarea
                     className="textarea"
@@ -504,18 +516,18 @@ function AutoCaptureSection(
                             onChange={(e) => props.setCaptureFileSizeMinimumKb(Number(e.target.value))}
                             className="select select-sm flex-1"
                         >
-                            <option value={0}>Custom / No limit</option>
+                            <option value={0}>{browser.i18n.getMessage("config_capture_file_size_custom")}</option>
                             <option value={102400}>100 MB</option>
                             <option value={512000}>500 MB</option>
                             <option value={1048576}>1 GB</option>
                         </select>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <label className="text-sm">Custom value:</label>
+                        <label className="text-sm">{browser.i18n.getMessage("config_capture_file_size_custom_value")}:</label>
                         <input
                             type="number"
                             min={0}
-                            placeholder="Enter KB"
+                            placeholder={browser.i18n.getMessage("config_capture_file_size_enter_kb")}
                             value={props.captureFileSizeMinimumKb}
                             onChange={(e) => props.setCaptureFileSizeMinimumKb(Number(e.target.value || 0))}
                             className="input input-sm w-40"
@@ -532,12 +544,30 @@ function AutoCaptureSection(
                             onChange={(e) => props.setBypassShortcut(e.target.value)}
                             className="select select-sm flex-1"
                         >
-                            <option value={"Control"}>Control</option>
-                            <option value={"Delete"}>Delete</option>
+                            <option value={"Control"}>{browser.i18n.getMessage("config_bypass_shortcut_option_control")}</option>
+                            <option value={"Delete"}>{browser.i18n.getMessage("config_bypass_shortcut_option_delete")}</option>
                         </select>
                     </div>
                 </div>
                 <div>{browser.i18n.getMessage("config_bypass_shortcut_description")}</div>
+                <div className="mt-3"/>
+                <div className="flex flex-col space-y-2">
+                    <label>{browser.i18n.getMessage("config_suspend_shortcut")}</label>
+                    <div className="flex items-center space-x-2">
+                        <select
+                            value={props.suspendShortcut}
+                            onChange={(e) => props.setSuspendShortcut(e.target.value)}
+                            className="select select-sm flex-1"
+                        >
+                            <option value={"ShiftRight"}>{browser.i18n.getMessage("config_suspend_shortcut_option_right_shift")}</option>
+                            <option value={"ShiftLeft"}>{browser.i18n.getMessage("config_suspend_shortcut_option_left_shift")}</option>
+                            <option value={"Control"}>{browser.i18n.getMessage("config_suspend_shortcut_option_control")}</option>
+                            <option value={"Alt"}>{browser.i18n.getMessage("config_suspend_shortcut_option_alt")}</option>
+                            <option value={"AltRight"}>{browser.i18n.getMessage("config_suspend_shortcut_option_right_alt")}</option>
+                        </select>
+                    </div>
+                </div>
+                <div>{browser.i18n.getMessage("config_suspend_shortcut_description")}</div>
             </div>
         }
     />

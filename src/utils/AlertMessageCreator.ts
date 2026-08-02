@@ -1,5 +1,7 @@
+import browser from "webextension-polyfill";
+
 export function createAlertStringForMyExtension(
     message: string,
 ){
-    return `AB Download Manager\n${message}`;
+    return `${browser.i18n.getMessage("abdm_notification_title")}\n${message}`;
 }
